@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Syc.SorteoApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3be599377a2716cc2221fd90d8d3d098dd73b7f0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b725d5635f827d8da2563c01e5ad6d09c0854bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("Syc.SorteoApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Syc.SorteoApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

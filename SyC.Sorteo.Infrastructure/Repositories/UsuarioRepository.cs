@@ -14,7 +14,7 @@ namespace SyC.Sorteo.Infrastructure.Repositories
         public async Task<Usuario?> GetByNombreUsuarioAsync(string nombreUsuario) =>
             await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario);
 
-        public async Task<Usuario?> GetByIdAsync(Guid id) =>
+        public async Task<Usuario?> GetByIdAsync(int id) =>
             await _context.Usuarios.FindAsync(id);
 
         public async Task<Usuario> CreateAsync(Usuario usuario)

@@ -21,7 +21,7 @@ namespace SyC.Sorteo.Infrastructure.Repositories
             return inscripcion;
         }
 
-        public async Task<Inscripcion?> ObtenerPorIdAsync(Guid id)
+        public async Task<Inscripcion?> ObtenerPorIdAsync(int id)
         {
             return await _context.Inscripciones.FindAsync(id);
         }
@@ -29,6 +29,11 @@ namespace SyC.Sorteo.Infrastructure.Repositories
         public async Task<IEnumerable<Inscripcion>> ObtenerTodasAsync()
         {
             return await _context.Inscripciones.ToListAsync();
+        }
+        public async Task UpdateAsync(Inscripcion inscripcion)
+        {
+            _context.Inscripciones.Update(inscripcion);
+            await _context.SaveChangesAsync();
         }
     }
 }

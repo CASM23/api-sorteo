@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Syc.Sorteo.Domain.Enums;
+using SyC.Sorteo.Domain.Enums;
 
 namespace SyC.Sorteo.Domain.Entities
 {

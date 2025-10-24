@@ -15,3 +15,4 @@
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Application/obj/Debug/net9.0/ref/SyC.Sorteo.Application.dll
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Application/bin/Debug/net9.0/SyC.Sorteo.Infrastructure.dll
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Application/bin/Debug/net9.0/SyC.Sorteo.Infrastructure.pdb
+/Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Application/obj/Debug/net9.0/SyC.Sorteo.Application.sourcelink.json

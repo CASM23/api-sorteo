@@ -10,3 +10,4 @@
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Domain/obj/Debug/net9.0/SyC.Sorteo.Domain.pdb
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Domain/obj/Debug/net9.0/ref/SyC.Sorteo.Domain.dll
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Domain/obj/Debug/net9.0/SyC.Sorteo.Domain.csproj.AssemblyReference.cache
+/Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/SyC.Sorteo.Domain/obj/Debug/net9.0/SyC.Sorteo.Domain.sourcelink.json

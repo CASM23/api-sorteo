@@ -5,7 +5,8 @@ namespace SyC.Sorteo.Domain.Interfaces
     public interface IInscripcionRepository
     {
         Task<Inscripcion> CrearAsync(Inscripcion inscripcion);
-        Task<Inscripcion?> ObtenerPorIdAsync(Guid id);
+        Task<Inscripcion?> ObtenerPorIdAsync(int id);
         Task<IEnumerable<Inscripcion>> ObtenerTodasAsync();
+        Task UpdateAsync(Inscripcion inscripcion);
     }
 }

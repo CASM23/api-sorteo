@@ -180,3 +180,4 @@
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/Syc.SorteoApi/obj/Debug/net9.0/Syc.SorteoApi.genruntimeconfig.cache
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/Syc.SorteoApi/obj/Debug/net9.0/ref/Syc.SorteoApi.dll
 /Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/Syc.SorteoApi/bin/Debug/net9.0/BCrypt.Net-Next.dll
+/Users/casm/Documents/NET/prueba-tecnica/sorteo-syc-app/Syc.SorteoApi/obj/Debug/net9.0/Syc.SorteoApi.sourcelink.json

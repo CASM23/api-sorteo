@@ -13,11 +13,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using SyC.Sorteo.Infrastructure.Identity;
+using Microsoft.Extensions.FileProviders;
 
 // =============================
 // 🔹 CONFIGURACIÓN INICIAL
 // =============================
 var builder = WebApplication.CreateBuilder(args);
+
+// 👇 Esto imprime el entorno actual en la consola
+Console.WriteLine($"🌍 Environment: {builder.Environment.EnvironmentName}");
 
 // =============================
 // 🔹 CONTROLLERS + JSON
@@ -97,6 +101,9 @@ builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 // Servicios de identidad
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
+// Servicios de email
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 // Validadores FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<InscripcionValidator>();
 
@@ -132,6 +139,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
+
+
+//builder.Services.AddScoped<EmailService>();
+
 
 // =============================
 // 🔹 CONSTRUCCIÓN APP
@@ -177,6 +188,17 @@ app.UseCors("AllowAll");
 // 🔹 Autenticación y autorización JWT
 app.UseAuthentication();
 app.UseAuthorization();
+
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+if (!Directory.Exists(uploadsPath))
+    Directory.CreateDirectory(uploadsPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
+
 
 app.MapControllers();
 

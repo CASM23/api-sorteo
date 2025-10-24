@@ -1,4 +1,4 @@
-namespace Syc.Sorteo.Domain.Enums
+namespace SyC.Sorteo.Domain.Enums
 {
     public enum EstadoInscripcion
     {

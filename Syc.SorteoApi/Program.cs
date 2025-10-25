@@ -188,6 +188,20 @@ builder.Services.AddAuthentication(options =>
                 status = 401,
                 message = message 
             }));
+        },
+        
+        OnForbidden = context =>
+        {
+            // Establece el código de estado 403
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            context.Response.ContentType = MediaTypeNames.Application.Json;
+
+            // Escribe el mensaje de error personalizado en el cuerpo de la respuesta
+            return context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(new
+            {
+                status = 403,
+                message = "Acceso Prohibido. El usuario debe ser administrador para acceder a este recurso."
+            }));
         }
     };
 });

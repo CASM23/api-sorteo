@@ -31,7 +31,10 @@ namespace SyC.Sorteo.Api.Filters
             if (string.IsNullOrEmpty(userIdClaim) || string.IsNullOrEmpty(currentJti))
             {
             
-                context.Result = new UnauthorizedObjectResult(new { message = "Información de usuario incompleta en el token." });
+                context.Result = new UnauthorizedObjectResult(new { 
+                    status = 401,
+                    message = "Información de usuario incompleta en el token." 
+                });
                 return;
             }
 
@@ -46,6 +49,7 @@ namespace SyC.Sorteo.Api.Filters
             {
             
                 context.Result = new UnauthorizedObjectResult(new { 
+                    status = 401,
                     message = "Su sesión ha sido invalidada. Por favor, inicie sesión nuevamente." 
                 });
                 return;

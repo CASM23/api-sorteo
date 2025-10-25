@@ -24,7 +24,7 @@ namespace SyC.Sorteo.Application.Services
             _emailService = emailService;
         }
 
-        public async Task<InscripcionDetalleResponse> CrearInscripcionAsync(InscripcionRequest request)
+        public async Task<InscripcionResponse> CrearInscripcionAsync(InscripcionRequest request)
         {
             string filePath = string.Empty;
             if (request.Documento != null)
@@ -51,12 +51,12 @@ namespace SyC.Sorteo.Application.Services
 
             var created = await _repo.CrearAsync(insc);
 
-            return new InscripcionDetalleResponse
+            return new InscripcionResponse
             {
                 Id = created.Id,
                 NombresApellidos = insc.NombresApellidos,
                 FechaRegistro = insc.FechaRegistro,
-                DocumentoUrl = insc.DocumentoAdjunto?.Url
+                Estado = insc.Estado.ToString()
             };
         }
 

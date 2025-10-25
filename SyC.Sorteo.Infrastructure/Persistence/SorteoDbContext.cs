@@ -17,6 +17,8 @@ namespace SyC.Sorteo.Infrastructure.Persistence
         public DbSet<Inscripcion> Inscripciones { get; set; } = null!;
         public DbSet<DocumentoAdjunto> DocumentosAdjuntos { get; set; } = null!;
         public DbSet<Notificacion> Notificaciones { get; set; } = null!;
+        public DbSet<LastTokenId> LastTokenIds { get; set; } // <--- AGREGAR ESTA LÍNEA
+
 
         // ==============================
         // Configuración de modelos

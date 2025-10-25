@@ -14,19 +14,23 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using SyC.Sorteo.Infrastructure.Identity;
 using Microsoft.Extensions.FileProviders;
+using System.Net.Mime; 
+using SyC.Sorteo.Api.Filters; // 🚨 NUEVO: Namespace del filtro de revocación
 
 // =============================
 // 🔹 CONFIGURACIÓN INICIAL
 // =============================
 var builder = WebApplication.CreateBuilder(args);
 
-// 👇 Esto imprime el entorno actual en la consola
-Console.WriteLine($"🌍 Environment: {builder.Environment.EnvironmentName}");
 
 // =============================
 // 🔹 CONTROLLERS + JSON
 // =============================
-builder.Services.AddControllers()
+
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add(typeof(ValidateJtiFilter)); 
+    })
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -45,7 +49,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API RESTful para gestión de sorteos - Prueba Técnica SyC S.A."
     });
 
-    // 🔹 Habilitar JWT en Swagger
+    // 🔹 Habilitar JWT 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Autenticación JWT usando el esquema Bearer. Ejemplo: 'Bearer {token}'",
@@ -107,11 +111,18 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 // Validadores FluentValidation
 builder.Services.AddValidatorsFromAssemblyContaining<InscripcionValidator>();
 
+// 🚨 NUEVO: Registramos el filtro de revocación en el contenedor DI (porque usa DbContext)
+builder.Services.AddScoped<ValidateJtiFilter>();
+
+
 // =============================
-// 🔹 CONFIGURACIÓN JWT
+// 🔹 CONFIGURACIÓN JWT (CON GESTIÓN DE ERRORES)
 // =============================
 var jwtSection = builder.Configuration.GetSection("Jwt");
-var key = jwtSection.GetValue<string>("Key");
+// Manejo de nulo seguro para la clave
+var jwtKey = jwtSection.GetValue<string>("Key") ?? 
+             throw new InvalidOperationException("La clave JWT 'Key' no se encuentra en la configuración."); 
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -120,7 +131,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; // Cambia a true en producción
+    options.RequireHttpsMetadata = false; 
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -130,7 +141,54 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSection.GetValue<string>("Issuer"),
         ValidAudience = jwtSection.GetValue<string>("Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+
+        OnAuthenticationFailed = context =>
+        {
+      
+            var exception = context.Exception; 
+            
+            if (exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                context.Response.Headers.Add("Token-Expired", "true");
+                context.Fail("El token de acceso ha expirado. Por favor, inicie sesión nuevamente.");
+            }
+            else if (exception.GetType() == typeof(SecurityTokenInvalidSignatureException))
+            {
+                context.Fail("La firma del token es inválida. Posiblemente manipulado.");
+            }
+           
+
+            return Task.CompletedTask;
+        },
+        
+        OnChallenge = context =>
+        {
+          
+            context.HandleResponse(); 
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = MediaTypeNames.Application.Json;
+
+            var message = "Acceso no autorizado.";
+            if (string.IsNullOrEmpty(context.Error) && string.IsNullOrEmpty(context.ErrorDescription))
+            {
+                message = "Token JWT faltante o malformado en el encabezado Authorization (Bearer).";
+            }
+            else
+            {
+                message = context.AuthenticateFailure?.Message ?? context.ErrorDescription ?? context.Error;
+            }
+
+            return context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(new 
+            {
+                status = 401,
+                message = message 
+            }));
+        }
     };
 });
 
@@ -139,10 +197,6 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
-
-
-//builder.Services.AddScoped<EmailService>();
-
 
 // =============================
 // 🔹 CONSTRUCCIÓN APP
@@ -162,7 +216,7 @@ using (var scope = app.Services.CreateScope())
         var admin = new SyC.Sorteo.Domain.Entities.Usuario
         {
             NombreUsuario = "admin",
-            ClaveHash = PasswordHasher.Hash("Admin123!"),
+            ClaveHash = PasswordHasher.Hash("Admin1G23!"), 
             Correo = "admin@example.com",
             Rol = "Admin"
         };

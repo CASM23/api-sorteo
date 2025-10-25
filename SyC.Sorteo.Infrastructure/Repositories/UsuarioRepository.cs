@@ -25,5 +25,29 @@ namespace SyC.Sorteo.Infrastructure.Repositories
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+
+        public async Task UpdateLastTokenJtiAsync(int userId, string jti)
+        {
+          
+            var lastToken = await _context.LastTokenIds
+                .FirstOrDefaultAsync(t => t.UsuarioId == userId);
+
+            if (lastToken == null)
+            {
+             
+                _context.LastTokenIds.Add(new LastTokenId { UsuarioId = userId, Jti = jti });
+            }
+            else
+            {
+                
+                lastToken.Jti = jti;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+
+
+
     }
 }

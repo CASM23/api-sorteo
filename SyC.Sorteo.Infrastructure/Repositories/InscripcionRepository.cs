@@ -23,7 +23,9 @@ namespace SyC.Sorteo.Infrastructure.Repositories
 
         public async Task<Inscripcion?> ObtenerPorIdAsync(int id)
         {
-            return await _context.Inscripciones.FindAsync(id);
+            return await _context.Inscripciones
+                .Include(i => i.DocumentoAdjunto) 
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<IEnumerable<Inscripcion>> ObtenerTodasAsync()

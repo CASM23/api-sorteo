@@ -9,7 +9,7 @@ namespace SyC.Sorteo.Infrastructure.Identity
 {
     public interface IJwtService
     {
-        string GenerateToken(Usuario usuario);
+        (string Token, string Jti) GenerateToken(Usuario usuario); 
     }
 
     public class JwtService : IJwtService
@@ -17,20 +17,22 @@ namespace SyC.Sorteo.Infrastructure.Identity
         private readonly IConfiguration _config;
         public JwtService(IConfiguration config) => _config = config;
 
-        public string GenerateToken(Usuario usuario)
+        public (string Token, string Jti) GenerateToken(Usuario usuario) 
         {
             var jwtSection = _config.GetSection("Jwt");
             var key = jwtSection.GetValue<string>("Key")!;
             var issuer = jwtSection.GetValue<string>("Issuer");
             var audience = jwtSection.GetValue<string>("Audience");
             var expiresInMinutes = jwtSection.GetValue<int>("ExpiresIn");
+            var tokenId = Guid.NewGuid().ToString(); 
 
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new Claim(ClaimTypes.Name, usuario.NombreUsuario),
                 new Claim(ClaimTypes.Email, usuario.Correo ?? string.Empty),
-                new Claim(ClaimTypes.Role, usuario.Rol ?? "Admin")
+                new Claim(ClaimTypes.Role, usuario.Rol ?? "Admin"),
+                new Claim(JwtRegisteredClaimNames.Jti, tokenId) 
             };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -44,7 +46,7 @@ namespace SyC.Sorteo.Infrastructure.Identity
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return (new JwtSecurityTokenHandler().WriteToken(token), tokenId);
         }
     }
 }

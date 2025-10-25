@@ -8,7 +8,6 @@ namespace SyC.Sorteo.Domain.Entities
 
         public string NombreUsuario { get; set; } = string.Empty;
 
-        // Guardamos la contraseña en hash (nunca texto plano)
         public string ClaveHash { get; set; } = string.Empty;
 
         public string Rol { get; set; } = "Admin";

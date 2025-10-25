@@ -19,7 +19,6 @@ namespace SyC.Sorteo.Domain.Entities
         public EstadoInscripcion Estado { get; set; } = EstadoInscripcion.Pendiente;
         public DateTime FechaRegistro { get; set; } = DateTime.UtcNow;
 
-        // Relaciones
         public DocumentoAdjunto? DocumentoAdjunto { get; set; }
         public ICollection<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
     }

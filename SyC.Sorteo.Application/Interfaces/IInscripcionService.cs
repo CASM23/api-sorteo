@@ -10,6 +10,6 @@ namespace SyC.Sorteo.Application.Interfaces
         Task<IEnumerable<InscripcionListItemResponse>> ListarInscripcionesAsync();
         Task<InscripcionDetalleResponse?> ObtenerDetalleAsync(int id);
         Task<bool> CambiarEstadoAsync(int id, EstadoInscripcion nuevoEstado);
-        Task<InscripcionDetalleResponse> CrearInscripcionAsync(InscripcionRequest request);
+        Task<InscripcionResponse> CrearInscripcionAsync(InscripcionRequest request);
     }
 }

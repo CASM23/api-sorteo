@@ -9,7 +9,7 @@ namespace SyC.Sorteo.Domain.Entities
         public int InscripcionId { get; set; }
         public Inscripcion Inscripcion { get; set; } = null!;
 
-        public string Medio { get; set; } = "Email"; // o "SMS"
+        public string Medio { get; set; } = "Email"; 
         public string Destinatario { get; set; } = string.Empty;
         public string Mensaje { get; set; } = string.Empty;
 

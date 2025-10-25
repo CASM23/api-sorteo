@@ -12,7 +12,6 @@ namespace SyC.Sorteo.Application.DTOs.Requests
         public string Telefono { get; set; } = string.Empty;
         public string Correo { get; set; } = string.Empty;
 
-        // 👇 Adjuntar imagen o PDF (multipart/form-data)
         public IFormFile? Documento { get; set; }
     }
 }

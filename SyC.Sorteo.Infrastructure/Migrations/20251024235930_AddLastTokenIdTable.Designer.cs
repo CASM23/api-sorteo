@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SyC.Sorteo.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using SyC.Sorteo.Infrastructure.Persistence;
 namespace SyC.Sorteo.Infrastructure.Migrations
 {
     [DbContext(typeof(SorteoDbContext))]
-    partial class SorteoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251024235930_AddLastTokenIdTable")]
+    partial class AddLastTokenIdTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

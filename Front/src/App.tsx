@@ -5,7 +5,7 @@ import LoginPage from './pages/Login'
 import Inscripciones from './pages/Incripciones'
 import AdminListPage from './pages/AdminList'
 import InscripcionDetalle from './pages/InscripcionDetalle'
-import { useAuthProvider, AuthProvider } from './providers/auth'
+import { useAuthProvider, AuthProvider } from './provider/auth'
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAuthProvider()

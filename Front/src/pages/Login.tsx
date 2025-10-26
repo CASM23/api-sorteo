@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import api from '../api'
-import { useAuthProvider } from '../providers/auth'
+import { useAuthProvider } from '../provider/auth'
 import { useNavigate } from 'react-router-dom'
 import { useNotification } from '../notifications'
 

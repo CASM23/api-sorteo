@@ -42,7 +42,7 @@ Syc-Sorteo/
     ├── src/
     │   ├── api.ts                  # Axios + endpoints
     │   ├── notification/           # Componente para notificaciones
-    │   ├── context/                # AuthContext
+    │   ├── provider/               # AuthProvider
     │   ├── hooks/                  # Custom hooks (useAuth, 
     │   ├── pages/                  # Login, Inscripción, Admin, Detalle
     │   ├── types/                  # Tipos TS

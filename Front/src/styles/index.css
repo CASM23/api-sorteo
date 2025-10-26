@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body { @apply bg-pastel-blue text-slate-800 font-sans; }
+
+/* small card utility */
+.card { @apply bg-white rounded-2xl shadow-md p-4 }
+
+@keyframes fade-in {
+    from { 
+      opacity: 0; 
+      transform: translateX(100%); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }

@@ -15,7 +15,7 @@ const loginSchema = yup.object({
 
 export default function LoginPage () {
   const { register, handleSubmit, formState:{ errors } } = useForm({ resolver: yupResolver(loginSchema) })
-  const { login } = useAuthProvider()
+  const { login,logout  } = useAuthProvider()
   const nav = useNavigate()
   const { showNotification } = useNotification()
 
@@ -28,6 +28,7 @@ export default function LoginPage () {
     }catch(e: any){
       console.error("Error en login:", e);
       showNotification(`❌ ${e.response?.data?.message || 'Error en login. Revise sus credenciales.'}`, 'error')
+      logout(); 
     }
   }
 

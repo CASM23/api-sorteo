@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthProvider } from '../provider/auth';
 import api from '../api';
+import React, { useEffect, useState } from 'react';
 
 type InscripcionItem = { id:number; nombresApellidos:string; fechaRegistro:string; }
 
@@ -15,6 +16,7 @@ const AdminListPage = () => {
 
   const { user, logout } = useAuthProvider(); 
   const nav = useNavigate()
+  const [redirecting, setRedirecting] = useState(false)
 
   const handleLogout = () => {
     logout(); 
@@ -26,8 +28,48 @@ const AdminListPage = () => {
     queryFn: fetchInscripciones,
   });
 
+  useEffect(() => {
+    if (error) {
+  
+      setRedirecting(true);
+      const timer = setTimeout(() => {
+        logout();
+        nav('/'); 
+      }, 5000); 
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, logout, nav]); 
+
+  const errorMensaje = (err: any) => {
+    if (err?.message?.includes('401')) {
+      return {
+        title: '¡Sesión Expirada!',
+        message: 'Tu sesión de administrador ha caducado o ha sido invalidada. Por favor, vuelve a iniciar sesión.'
+      };
+    }
+
+    return {
+      title: 'Error de Conexión',
+      message: 'No pudimos cargar la lista de inscripciones. Inténtalo más tarde.'
+    };
+  };
+
   if (isLoading) return <div className='text-center p-8 text-indigo-600'>Cargando inscripciones...</div>;
-  if (error) return <div className='text-center p-8 text-red-600'>Error al cargar: {error.message}</div>;
+
+  if (error) {
+    const { title, message } = errorMensaje(error);
+    
+    return (
+      <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+        <div className='text-center p-8 bg-white max-w-md mx-auto rounded-xl shadow-lg border-t-4 border-red-500'>
+          <div className='text-xl font-bold text-red-600 mb-2'>{title}</div>
+          <p className='text-gray-700 mb-4'>{message}</p>
+          <p className='text-sm text-gray-500'>Redirigiendo al inicio de sesión en 5 segundos...</p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className='p-6 bg-gray-50 min-h-screen'>

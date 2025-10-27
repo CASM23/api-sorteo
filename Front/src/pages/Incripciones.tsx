@@ -4,14 +4,24 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import api from '../api'
 import { useNotification } from '../notifications' 
 
-// Definición las validación 
 const schema = yup.object({
   tipoDocumento: yup.string().required('El tipo de documento es requerido'),
-  numeroDocumento: yup.string().required('El número de documento es requerido'),
-  nombresApellidos: yup.string().required('Los nombres y apellidos son requeridos'),
+  
+  numeroDocumento: yup.string()
+    .required('El número de documento es requerido')
+    .matches(/^[0-9]+$/, 'El número de documento debe contener solo dígitos numéricos.'),
+    
+  nombresApellidos: yup.string()
+    .required('Los nombres y apellidos son requeridos')
+    .matches(/^[a-zA-Z\s]+$/, 'El nombre solo puede contener letras y espacios.'),
+    
   fechaNacimiento: yup.date().required('La fecha de nacimiento es requerida'),
   direccion: yup.string().required('La dirección es requerida'),
-  telefono: yup.string().required('El teléfono es requerido'),
+  
+  telefono: yup.string()
+    .required('El teléfono es requerido')
+    .matches(/^[0-9]+$/, 'El teléfono debe contener solo dígitos numéricos.'),
+    
   correo: yup.string().email('Debe ser un correo electrónico válido').required('El correo es requerido'),
   documento: yup.mixed().required('Adjunta un PDF o imagen')
 })
